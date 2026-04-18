@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CleanCarApi.Domain\CleanCarApi.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
