@@ -1,12 +1,13 @@
 ﻿using CleanCarApi.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanCarApi.Infrastructure.Data;
 
-// DbContext är EF Cores brygga mellan C#-koden och databasen
-public class AppDbContext : DbContext
+// Ärver nu från IdentityDbContext för att få användare och roller gratis
+public class AppDbContext : IdentityDbContext<IdentityUser>
 {
-    // Tar emot konfiguration utifrån (connection string etc.) via konstruktorn
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     // DbSet representerar en tabell i databasen
@@ -15,6 +16,9 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Måste anropas för att Identity-tabellerna ska skapas korrekt
+        base.OnModelCreating(modelBuilder);
+
         // Konfigurerar 1-till-många: en Brand har många Cars
         modelBuilder.Entity<Car>()
             .HasOne(c => c.Brand)
